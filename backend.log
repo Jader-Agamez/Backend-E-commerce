@@ -1,0 +1,24 @@
+✅ Base de datos sincronizada
+[CRON] Tarea de limpieza de carritos iniciada
+🚀 Servidor corriendo en puerto 5000
+[0mGET /api/products?limit=8 [32m200[0m 72.232 ms - 44[0m
+[0mGET /api/categories [32m200[0m 37.486 ms - 514[0m
+[0mGET /api/categories [36m304[0m 10.879 ms - -[0m
+[0mGET /api/products?limit=8 [36m304[0m 24.738 ms - -[0m
+[0mPOST /api/auth/login [33m401[0m 88.352 ms - 37[0m
+[0mGET /api/categories [36m304[0m 37.724 ms - -[0m
+[0mGET /api/products?page=1 [32m200[0m 39.761 ms - 44[0m
+[0mGET /api/categories [36m304[0m 41.283 ms - -[0m
+[0mGET /api/products?page=1 [36m304[0m 36.605 ms - -[0m
+[0mGET /api/categories [36m304[0m 13.154 ms - -[0m
+[0mGET /api/products?limit=8 [36m304[0m 43.537 ms - -[0m
+[0mGET /api/categories [36m304[0m 58.097 ms - -[0m
+[0mGET /api/products?limit=8 [36m304[0m 55.640 ms - -[0m
+[0mGET /api/categories [36m304[0m 23.040 ms - -[0m
+[0mGET /api/products?categoryId=1&page=1 [32m200[0m 39.555 ms - 44[0m
+[0mGET /api/categories [36m304[0m 29.661 ms - -[0m
+[0mGET /api/products?categoryId=1&page=1 [36m304[0m 24.095 ms - -[0m
+[0mGET /api/categories [32m200[0m 10.352 ms - 2[0m
+[0mGET /api/products?limit=8 [36m304[0m 24.693 ms - -[0m
+[0mGET /api/categories [36m304[0m 10.992 ms - -[0m
+[0mGET /api/products?limit=8 [36m304[0m 9.402 ms - -[0m
