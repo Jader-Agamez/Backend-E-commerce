@@ -5,4 +5,4 @@ RUN npm install
 COPY . .
 RUN mkdir -p invoices
 EXPOSE 5000
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
