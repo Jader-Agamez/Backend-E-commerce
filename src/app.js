@@ -44,13 +44,21 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-sequelize.sync({ alter: true }).then(() => {
-  console.log('✅ Base de datos sincronizada');
-  app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));
-  startCartCleanup();
-}).catch((err) => {
-  console.error('❌ Error al conectar DB:', err.message);
-  process.exit(1);
-});
+const startServer = async () => {
+  try {
+    await sequelize.sync({ alter: true });
+    console.log('✅ Base de datos sincronizada');
+    app.listen(PORT, () => console.log(`🚀 Servidor corriendo en puerto ${PORT}`));
+    startCartCleanup();
+  } catch (err) {
+    console.error('❌ Error al conectar DB:', err.message);
+    process.exit(1);
+  }
+};
+
+if (require.main === module) {
+  startServer();
+}
 
 module.exports = app;
+module.exports.startServer = startServer;

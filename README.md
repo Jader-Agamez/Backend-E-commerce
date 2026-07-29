@@ -7,7 +7,7 @@ API REST construida con **Node.js**, **Express** y **SQLite** (vía Sequelize).
 ## 📁 Estructura
 
 ```
-backend/
+backend-E-commerce/
 ├── src/
 │   ├── app.js                  # Entrada principal, middlewares y arranque
 │   ├── config/
@@ -59,7 +59,7 @@ backend/
 ## ⚙️ Instalación
 
 ```bash
-cd backend
+cd backend-E-commerce
 npm install
 ```
 
@@ -70,7 +70,7 @@ NODE_ENV=development
 PORT=5000
 
 # Base de datos (SQLite — no requiere servidor)
-# El archivo se crea automáticamente en backend/database.sqlite
+# El archivo se crea automáticamente en backend-E-commerce/database.sqlite
 
 # JWT
 JWT_SECRET=supersecretjwtkey2024
@@ -95,6 +95,7 @@ FRONTEND_URL=http://localhost:3000
 | `npm start` | Producción |
 | `npm run dev` | Desarrollo con nodemon |
 | `npm run seed` | Crear tablas y cargar datos iniciales |
+| `npm test` | Ejecutar pruebas del flujo crítico |
 
 ### Primera ejecución
 
@@ -103,11 +104,19 @@ npm run seed   # Crea las tablas y carga datos de prueba
 npm start      # Arranca el servidor en http://localhost:5000
 ```
 
+### Pruebas
+
+```bash
+npm test
+```
+
+Ejecuta una suite mínima para validar el recorrido principal: login, listado de productos, agregar al carrito, crear pedido y consultar pedidos del usuario.
+
 ---
 
 ## 🗄️ Base de datos
 
-Usa **SQLite** — no requiere instalar ningún servidor. El archivo `database.sqlite` se genera automáticamente en la carpeta `backend/`.
+Usa **SQLite** — no requiere instalar ningún servidor. El archivo `database.sqlite` se genera automáticamente en la carpeta `backend-E-commerce/`.
 
 ### Modelos y relaciones
 
@@ -225,7 +234,7 @@ Para ver los emails en desarrollo, accede a **https://ethereal.email** con las c
 
 ## 📄 Facturas PDF
 
-Al confirmar un pedido se genera automáticamente un PDF en `backend/invoices/invoice-{id}.pdf` con:
+Al confirmar un pedido se genera automáticamente un PDF en `backend-E-commerce/invoices/invoice-{id}.pdf` con:
 - Datos del cliente
 - Tabla de productos, cantidades y precios
 - Total del pedido
