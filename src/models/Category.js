@@ -7,6 +7,11 @@ const Category = sequelize.define('Category', {
   description: { type: DataTypes.TEXT },
   image: { type: DataTypes.STRING(255) },
   isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
-}, { tableName: 'categories' });
+}, {
+  tableName: 'categories',
+  timestamps: true,
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+});
 
 module.exports = Category;

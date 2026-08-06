@@ -13,6 +13,9 @@ const User = sequelize.define('User', {
   isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
 }, {
   tableName: 'users',
+  timestamps: true,
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   hooks: {
     beforeCreate: async (user) => { user.password = await bcrypt.hash(user.password, 10); },
     beforeUpdate: async (user) => {

@@ -1,17 +1,24 @@
 const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-});
+// During tests we avoid creating a real transporter to prevent network calls
+// and hanging handles (rate limits). Use DISABLE_EMAILS=true or NODE_ENV==='test'.
+let transporter = null;
+if (process.env.NODE_ENV !== 'test' && process.env.DISABLE_EMAILS !== 'true') {
+  transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
+  });
+}
 
 const sendOrderConfirmation = async (order, user) => {
+  if (!transporter) return Promise.resolve();
+
   const itemsHtml = order.items
     .map((i) => `<tr><td>${i.product.name}</td><td>${i.quantity}</td><td>$${i.unitPrice}</td><td>$${i.subtotal}</td></tr>`)
     .join('');
 
-  await transporter.sendMail({
+  return transporter.sendMail({
     from: process.env.EMAIL_FROM,
     to: user.email,
     subject: `Confirmación de pedido #${order.id}`,
@@ -29,7 +36,8 @@ const sendOrderConfirmation = async (order, user) => {
 };
 
 const sendWelcomeEmail = async (user) => {
-  await transporter.sendMail({
+  if (!transporter) return Promise.resolve();
+  return transporter.sendMail({
     from: process.env.EMAIL_FROM,
     to: user.email,
     subject: '¡Bienvenido a E-Commerce!',
