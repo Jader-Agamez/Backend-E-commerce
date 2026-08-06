@@ -11,6 +11,11 @@ const Product = sequelize.define('Product', {
   sku: { type: DataTypes.STRING(50), unique: true },
   isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
   categoryId: { type: DataTypes.INTEGER, allowNull: false },
-}, { tableName: 'products' });
+}, {
+  tableName: 'products',
+  timestamps: true,
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+});
 
 module.exports = Product;
