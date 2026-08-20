@@ -7,7 +7,7 @@ const sequelize = require('../config/database');
 exports.createOrder = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
-    const { shippingAddress, paymentMethod = 'card', cardNumber, cardHolder, notes } = req.body;
+    const { shippingAddress, paymentMethod = 'card', paymentMethodId, notes } = req.body;
 
     // Get cart items
     const cartItems = await Cart.findAll({
@@ -25,7 +25,7 @@ exports.createOrder = async (req, res, next) => {
     }
 
     // Process payment
-    const payment = await processPayment({ amount: total, cardNumber, cardHolder });
+    const payment = await processPayment({ amount: total, paymentMethodId });
     if (!payment.success) {
       await t.rollback();
       return res.status(402).json({ message: payment.message });

@@ -1,23 +1,24 @@
-const { v4: uuidv4 } = require('uuid');
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
-/**
- * Simulated payment gateway
- * In production, replace with Stripe/PayPal/MercadoPago SDK
- */
-const processPayment = async ({ amount, cardNumber, cardHolder }) => {
-  // Simulate processing delay
-  await new Promise((r) => setTimeout(r, 500));
+const processPayment = async ({ amount, paymentMethodId, currency = 'usd' }) => {
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(amount * 100), // Stripe usa centavos
+      currency,
+      payment_method: paymentMethodId,
+      confirm: true,
+      automatic_payment_methods: { enabled: true, allow_redirects: 'never' },
+    });
 
-  // Simulate decline for test card 4000000000000002
-  if (cardNumber === '4000000000000002') {
-    return { success: false, message: 'Tarjeta declinada' };
+    if (paymentIntent.status === 'succeeded') {
+      return { success: true, paymentId: paymentIntent.id, message: 'Pago procesado exitosamente' };
+    }
+
+    return { success: false, message: 'Pago no completado' };
+  } catch (err) {
+    return { success: false, message: err.message };
   }
-
-  return {
-    success: true,
-    paymentId: `PAY-${uuidv4().slice(0, 8).toUpperCase()}`,
-    message: 'Pago procesado exitosamente',
-  };
 };
 
 module.exports = { processPayment };

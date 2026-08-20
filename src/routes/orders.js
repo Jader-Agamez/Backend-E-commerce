@@ -3,6 +3,8 @@ const { body, param, query } = require('express-validator');
 const ctrl = require('../controllers/orderController');
 const { authenticate, authorize } = require('../middleware/auth');
 const validate = require('../middleware/validate');
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 const orderValidation = [
   body('shippingAddress')
@@ -12,14 +14,8 @@ const orderValidation = [
   body('paymentMethod')
     .optional()
     .isIn(['card', 'paypal', 'transfer']).withMessage('Método de pago inválido'),
-  body('cardNumber')
-    .if(body('paymentMethod').equals('card'))
-    .isLength({ min: 13, max: 19 }).withMessage('Número de tarjeta inválido')
-    .matches(/^[0-9]+$/).withMessage('Número de tarjeta solo debe contener números'),
-  body('cardHolder')
-    .if(body('paymentMethod').equals('card'))
-    .trim()
-    .notEmpty().withMessage('Nombre del titular requerido'),
+  body('paymentMethodId')
+    .notEmpty().withMessage('Método de pago requerido'),
   body('notes')
     .optional()
     .trim()
@@ -33,6 +29,19 @@ const statusValidation = [
 ];
 
 router.use(authenticate);
+
+router.post('/create-payment-intent', async (req, res) => {
+  try {
+    const { amount } = req.body;
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(amount * 100),
+      currency: 'usd',
+    });
+    res.json({ clientSecret: paymentIntent.client_secret });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 router.post('/', orderValidation, validate, ctrl.createOrder);
 router.get('/my', ctrl.getMyOrders);
