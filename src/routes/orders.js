@@ -4,7 +4,6 @@ const ctrl = require('../controllers/orderController');
 const { authenticate, authorize } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 const Stripe = require('stripe');
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 const orderValidation = [
   body('shippingAddress')
@@ -32,6 +31,7 @@ router.use(authenticate);
 
 router.post('/create-payment-intent', async (req, res) => {
   try {
+    const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
     const { amount } = req.body;
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100),

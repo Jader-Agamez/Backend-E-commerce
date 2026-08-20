@@ -32,9 +32,9 @@ router.put('/:id',
       .optional()
       .isBoolean().withMessage('isActive debe ser booleano'),
     body('phone')
-      .optional()
+      .optional({ nullable: true })
       .trim()
-      .isMobilePhone('es-ES').withMessage('Teléfono inválido'),
+      .isLength({ max: 20 }).withMessage('Teléfono inválido'),
     body('address')
       .optional()
       .trim()

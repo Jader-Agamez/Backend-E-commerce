@@ -1,7 +1,7 @@
 const Stripe = require('stripe');
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 const processPayment = async ({ amount, paymentMethodId, currency = 'usd' }) => {
+  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), // Stripe usa centavos
